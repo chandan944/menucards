@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+/* ─── Claymorphism Design Tokens ───────────────────────────────────────── */
+@theme {
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+  
+  --color-surface-0: #ffffff;
+  --color-surface-50: #eef3f8;
+  --color-surface-100: #e2e8f0;
+  --color-surface-200: #cbd5e1;
+  --color-surface-300: #94a3b8;
+  --color-surface-400: #64748b;
+  --color-surface-500: #475569;
+  --color-surface-600: #334155;
+  --color-surface-700: #1e293b;
+  --color-surface-800: #0f172a;
+  --color-surface-900: #020617;
+  
+  --color-accent-coral: #ff6b6b;
+  --color-accent-amber: #f59e0b;
+  --color-accent-emerald: #10b981;
+  --color-accent-violet: #8b5cf6;
+  --color-accent-rose: #f43f5e;
+  --color-accent-cyan: #06b6d4;
+  
+  --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ─── Keyframes ──────────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.94); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes float-clay {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+/* ─── Base Styles ────────────────────────────────────────────────────────── */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #eef3f8;
+  color: #1e293b;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #eef3f8;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+  border: 2px solid #eef3f8;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ─── Focus & Selection ─────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+::selection {
+  background: #bfdbfe;
+  color: #1e3a8a;
+}
+
+/* ─── CLAYMORPHISM UI CLASSES ───────────────────────────────────────────── */
+
+/* Clay 3D Card Container */
+.clay-card {
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 
+    10px 16px 28px -6px rgba(15, 23, 42, 0.07),
+    -8px -8px 20px rgba(255, 255, 255, 0.95),
+    inset 0px 2px 4px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-card-interactive {
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 
+    10px 16px 28px -6px rgba(15, 23, 42, 0.07),
+    -8px -8px 20px rgba(255, 255, 255, 0.95),
+    inset 0px 2px 4px rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.clay-card-interactive:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    14px 22px 36px -8px rgba(15, 23, 42, 0.12),
+    -10px -10px 24px rgba(255, 255, 255, 1),
+    inset 0px 3px 6px rgba(255, 255, 255, 0.95);
+}
+
+/* Clay 3D Inset Container (Subtle recessed panel) */
+.clay-inset {
+  background: #f8fafc;
+  box-shadow: 
+    inset 4px 4px 8px rgba(148, 163, 184, 0.18),
+    inset -4px -4px 8px rgba(255, 255, 255, 0.9);
+  border-radius: 24px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* Clay 3D Primary Pill Button */
+.clay-button-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: #ffffff;
+  border-radius: 999px;
+  box-shadow: 
+    0 10px 22px -4px rgba(37, 99, 235, 0.42),
+    inset 0 2px 4px rgba(255, 255, 255, 0.45),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.18);
+  border: none;
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-button-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 14px 28px -4px rgba(37, 99, 235, 0.5),
+    inset 0 3px 6px rgba(255, 255, 255, 0.6),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.18);
+}
+
+.clay-button-primary:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 4px 10px -2px rgba(37, 99, 235, 0.3),
+    inset 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Clay 3D Secondary Button */
+.clay-button-secondary {
+  background: #ffffff;
+  color: #1e293b;
+  border-radius: 999px;
+  box-shadow: 
+    6px 6px 14px rgba(148, 163, 184, 0.15),
+    -6px -6px 14px rgba(255, 255, 255, 0.95),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  font-weight: 600;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-button-secondary:hover {
+  background: #f8fafc;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    8px 8px 18px rgba(148, 163, 184, 0.2),
+    -8px -8px 18px rgba(255, 255, 255, 1);
+}
+
+.clay-button-secondary:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: inset 3px 3px 6px rgba(148, 163, 184, 0.2);
+}
+
+/* Clay 3D Inset Input Fields */
+.clay-input {
+  background: #f8fafc;
+  box-shadow: 
+    inset 3px 3px 6px rgba(148, 163, 184, 0.18),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.9);
+  border-radius: 18px;
+  border: 1.5px solid rgba(226, 232, 240, 0.8);
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+.clay-input:focus {
+  background: #ffffff;
+  border-color: #3b82f6;
+  box-shadow: 
+    0 0 0 4px rgba(59, 130, 246, 0.15),
+    inset 2px 2px 4px rgba(148, 163, 184, 0.1);
+}
+
+/* Clay 3D Badge / Chip */
+.clay-badge {
+  background: #ffffff;
+  box-shadow: 
+    4px 4px 10px rgba(148, 163, 184, 0.12),
+    -4px -4px 10px rgba(255, 255, 255, 0.9),
+    inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  border: 1px solid rgba(241, 245, 249, 0.8);
+}
+
+/* Clay 3D Icon Container */
+.clay-icon-box {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 
+    6px 6px 14px rgba(148, 163, 184, 0.15),
+    -6px -6px 14px rgba(255, 255, 255, 0.95),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Glass & Gradient Extensions */
+.gradient-text {
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #f43f5e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Storefront Theme Variables (dynamically injected) */
+.storefront {
+  --sf-primary: #111111;
+  --sf-secondary: #f5f5f5;
+  --sf-accent: #2563eb;
+  --sf-background: #eef3f8;
+  --sf-surface: #ffffff;
+  --sf-surface-hover: #f8fafc;
+  --sf-text: #0f172a;
+  --sf-text-secondary: #64748b;
+  --sf-border: #e2e8f0;
+  --sf-heading-font: 'Outfit', sans-serif;
+  --sf-body-font: 'Inter', sans-serif;
+  --sf-radius: 24px;
+}
+
+/* Print */
+@media print {
+  .no-print { display: none !important; }
+}
