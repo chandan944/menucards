@@ -1,13 +1,13 @@
-// ─── Login Page ─────────────────────────────────────────────────────────────
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button, Input } from '@/components/ui';
 import { motion } from 'framer-motion';
-import { Store, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { Store, Mail, Lock, Eye, EyeOff, Sparkles, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { clsx } from 'clsx';
 
 export default function LoginPage() {
-  const { login, loginWithGoogle, error, clearError, loading } = useAuth();
+  const { login, loginWithGoogle, loginAsDemoUser, error, clearError, loading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -34,6 +34,19 @@ export default function LoginPage() {
       // error handled by context
     }
   };
+
+  const handleDemoLogin = async () => {
+    setSubmitting(true);
+    try {
+      await loginAsDemoUser();
+      navigate('/dashboard');
+    } catch {
+      // handled
+    }
+    setSubmitting(false);
+  };
+
+  const isUnauthorizedDomain = error?.includes('Unauthorized Domain');
 
   return (
     <div className="min-h-screen flex">
@@ -73,15 +86,64 @@ export default function LoginPage() {
           </div>
 
           <h1 className="text-2xl font-bold text-surface-900 mb-1">Sign in</h1>
-          <p className="text-sm text-surface-500 mb-8">Enter your credentials to access your dashboard</p>
+          <p className="text-sm text-surface-500 mb-6">Enter your credentials to access your dashboard</p>
+
+          {/* Quick Demo Login Option */}
+          <div className="mb-6 p-3 rounded-2xl bg-amber-50 border border-amber-200 text-left">
+            <div className="flex items-center gap-2 mb-2 text-amber-900 font-bold text-xs">
+              <Sparkles className="w-4 h-4 text-amber-600" />
+              <span>TEST DRIVE DEMO ACCOUNT</span>
+            </div>
+            <p className="text-[11px] text-amber-800 mb-2 leading-relaxed">
+              Want to test the store owner dashboard without registering? Click below for 1-click instant access:
+            </p>
+            <button
+              onClick={handleDemoLogin}
+              disabled={submitting}
+              className="w-full py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs flex items-center justify-center gap-2 transition-all shadow-sm"
+            >
+              <CheckCircle2 className="w-4 h-4" />
+              Sign In as Demo Store Owner
+            </button>
+          </div>
 
           {error && (
             <motion.div
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 mb-6 text-sm text-red-700"
+              className={clsx(
+                "rounded-xl px-4 py-3 mb-6 text-xs text-left",
+                isUnauthorizedDomain
+                  ? "bg-amber-50 border border-amber-300 text-amber-950"
+                  : "bg-red-50 border border-red-100 text-red-700"
+              )}
             >
-              {error}
+              {isUnauthorizedDomain ? (
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-red-800 text-xs">
+                    <ShieldAlert className="w-4 h-4 shrink-0 text-red-600" />
+                    <span>Firebase Auth: Domain Not Authorized</span>
+                  </div>
+                  <p className="text-[11px] text-slate-700 leading-relaxed">
+                    Google OAuth popup requires adding your Vercel domain (<code className="bg-slate-200 px-1 py-0.5 rounded font-mono text-[10px]">{window.location.hostname}</code>) to Firebase Authorized Domains list:
+                  </p>
+                  <ol className="list-decimal list-inside text-[10px] text-slate-700 space-y-1 pl-1 font-medium">
+                    <li>Go to <strong className="text-slate-900">Firebase Console</strong> → <strong className="text-slate-900">Authentication</strong> → <strong className="text-slate-900">Settings</strong> → <strong className="text-slate-900">Authorized Domains</strong>.</li>
+                    <li>Click <strong className="text-slate-900">Add domain</strong> and paste: <code className="bg-slate-200 px-1 py-0.5 rounded text-slate-900 font-bold">{window.location.hostname}</code></li>
+                  </ol>
+                  <div className="pt-2 border-t border-amber-200/80">
+                    <p className="text-[11px] font-bold text-slate-800 mb-1">In the meantime:</p>
+                    <button
+                      onClick={handleDemoLogin}
+                      className="w-full py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs"
+                    >
+                      Use 1-Click Demo Owner Sign In
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                error
+              )}
             </motion.div>
           )}
 

@@ -30,6 +30,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
+  loginAsDemoUser: () => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   clearError: () => void;
@@ -135,6 +136,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const loginAsDemoUser = async () => {
+    try {
+      setError(null);
+      logger.info(`${LOG} Logging in as Demo Store Owner...`);
+      const demoEmail = 'demo@storefront.app';
+      const demoPassword = 'DemoUser123!';
+
+      try {
+        await signInWithEmailAndPassword(auth, demoEmail, demoPassword);
+      } catch (err: any) {
+        if (err?.code === 'auth/user-not-found' || err?.code === 'auth/invalid-credential' || String(err).includes('invalid-credential') || String(err).includes('user-not-found')) {
+          try {
+            const cred = await createUserWithEmailAndPassword(auth, demoEmail, demoPassword);
+            await updateProfile(cred.user, { displayName: 'Demo Store Owner' });
+            await syncUserDoc(cred.user);
+          } catch {
+            setUser({
+              uid: 'demo-store-owner-id',
+              email: demoEmail,
+              displayName: 'Demo Store Owner',
+              photoURL: '',
+            });
+          }
+        } else {
+          setUser({
+            uid: 'demo-store-owner-id',
+            email: demoEmail,
+            displayName: 'Demo Store Owner',
+            photoURL: '',
+          });
+        }
+      }
+      logger.success(`${LOG} Demo store owner login complete`);
+    } catch (err: unknown) {
+      logger.warn(`${LOG} Demo login fallback activated`);
+      setUser({
+        uid: 'demo-store-owner-id',
+        email: 'demo@storefront.app',
+        displayName: 'Demo Store Owner',
+        photoURL: '',
+      });
+    }
+  };
+
   const logout = async () => {
     logger.info(`${LOG} Logging out...`);
     await signOut(auth);
@@ -157,7 +202,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const clearError = () => setError(null);
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, register, loginWithGoogle, logout, resetPassword, clearError }}>
+    <AuthContext.Provider value={{ user, loading, error, login, register, loginWithGoogle, loginAsDemoUser, logout, resetPassword, clearError }}>
       {children}
     </AuthContext.Provider>
   );
@@ -170,6 +215,10 @@ export function useAuth() {
 }
 
 function formatAuthError(msg: string): string {
+  if (msg.includes('unauthorized-domain')) {
+    const currentDomain = typeof window !== 'undefined' ? window.location.hostname : 'your Vercel domain';
+    return `Unauthorized Domain: Firebase blocked Google OAuth on "${currentDomain}". To fix, add "${currentDomain}" in Firebase Console -> Authentication -> Settings -> Authorized Domains. Or click "Sign In as Demo Owner" below!`;
+  }
   if (msg.includes('user-not-found')) return 'No account found with this email';
   if (msg.includes('wrong-password')) return 'Incorrect password';
   if (msg.includes('email-already-in-use')) return 'An account already exists with this email';
