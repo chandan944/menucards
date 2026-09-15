@@ -32,9 +32,10 @@
   --color-accent-rose: #f43f5e;
   --color-accent-cyan: #06b6d4;
   
-  --font-heading: 'Outfit', 'Inter', system-ui, sans-serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', monospace;
 }
 
 /* ─── Keyframes ──────────────────────────────────────────────────────────── */
@@ -60,20 +61,23 @@
 
 /* ─── Base Styles ────────────────────────────────────────────────────────── */
 * {
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 html {
   scroll-behavior: smooth;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 body {
-  font-family: var(--font-body);
-  background: #eef3f8;
-  color: #1e293b;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #f4f5f8;
+  color: #0f172a;
   line-height: 1.6;
   overflow-x: hidden;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 /* ─── Scrollbar ──────────────────────────────────────────────────────────── */
