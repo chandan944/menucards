@@ -10,8 +10,13 @@ import { BUSINESS_TYPES } from '@/lib/constants';
 import { themeList } from '@/themes/themeRegistry';
 import {
   ArrowLeft, ArrowRight, Check, Store, Sparkles, Camera,
-  MapPin, Phone, Globe, Type,
+  MapPin, Phone, Globe, Type, Utensils, Coffee, Cake, Scissors,
+  ShoppingBag, Shirt, Smartphone, Gem, Dumbbell, Hotel, Wrench
 } from 'lucide-react';
+
+const ICON_MAP: Record<string, any> = {
+  Utensils, Coffee, Cake, Scissors, ShoppingBag, Shirt, Smartphone, Gem, Dumbbell, Hotel, Wrench, Store
+};
 import { InstagramIcon, FacebookIcon, TwitterIcon } from '@/components/ui/SocialIcons';
 import { clsx } from 'clsx';
 import type { BusinessType, SocialLinks } from '@/types';
@@ -140,7 +145,10 @@ export default function OnboardingPage() {
                 : 'border-surface-200 hover:border-surface-300 hover:bg-surface-50'
             )}
           >
-            <span className="text-2xl">{bt.icon}</span>
+            {(() => {
+              const IconComp = ICON_MAP[bt.icon] || Store;
+              return <IconComp className="w-6 h-6 text-brand-600" />;
+            })()}
             <span className="text-xs font-medium text-surface-700">{bt.label}</span>
           </button>
         ))}

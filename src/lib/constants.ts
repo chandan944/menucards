@@ -5,18 +5,18 @@ export const APP_TAGLINE = 'Create your digital storefront in minutes';
 export const APP_URL = window.location.origin;
 
 export const BUSINESS_TYPES = [
-  { value: 'restaurant', label: 'Restaurant', icon: '🍽️' },
-  { value: 'cafe', label: 'Cafe', icon: '☕' },
-  { value: 'bakery', label: 'Bakery', icon: '🧁' },
-  { value: 'salon', label: 'Salon', icon: '💇' },
-  { value: 'retail', label: 'Retail', icon: '🛍️' },
-  { value: 'fashion', label: 'Fashion', icon: '👗' },
-  { value: 'electronics', label: 'Electronics', icon: '📱' },
-  { value: 'jewellery', label: 'Jewellery', icon: '💎' },
-  { value: 'gym', label: 'Gym', icon: '💪' },
-  { value: 'hotel', label: 'Hotel', icon: '🏨' },
-  { value: 'service', label: 'Service', icon: '🔧' },
-  { value: 'other', label: 'Other', icon: '🏪' },
+  { value: 'restaurant', label: 'Restaurant', icon: 'Utensils' },
+  { value: 'cafe', label: 'Cafe', icon: 'Coffee' },
+  { value: 'bakery', label: 'Bakery', icon: 'Cake' },
+  { value: 'salon', label: 'Salon', icon: 'Scissors' },
+  { value: 'retail', label: 'Retail', icon: 'ShoppingBag' },
+  { value: 'fashion', label: 'Fashion', icon: 'Shirt' },
+  { value: 'electronics', label: 'Electronics', icon: 'Smartphone' },
+  { value: 'jewellery', label: 'Jewellery', icon: 'Gem' },
+  { value: 'gym', label: 'Gym', icon: 'Dumbbell' },
+  { value: 'hotel', label: 'Hotel', icon: 'Hotel' },
+  { value: 'service', label: 'Service', icon: 'Wrench' },
+  { value: 'other', label: 'Other', icon: 'Store' },
 ] as const;
 
 export const CURRENCIES = [

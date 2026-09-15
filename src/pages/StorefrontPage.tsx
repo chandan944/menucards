@@ -14,7 +14,8 @@ import { ScrollReveal, StaggerContainer, staggerChild, TiltCard, ParallaxLayer }
 import { StoreReviewsSection } from '@/components/storefront/StoreReviewsSection';
 import {
   MapPin, Phone, MessageCircle, Star, X, ArrowUp, ShoppingBag,
-  Flame, Sparkles, CheckCircle2
+  Flame, Sparkles, CheckCircle2, Laptop, Smartphone, Armchair,
+  Shirt, Scissors, Coffee, Search, Store as StoreIcon
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, TwitterIcon } from '@/components/ui/SocialIcons';
 import { clsx } from 'clsx';
@@ -616,7 +617,9 @@ export default function StorefrontPage() {
   if (error || !store || !business) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-white px-6 text-center">
-        <div className="text-6xl mb-4">🔍</div>
+        <div className="w-16 h-16 rounded-3xl bg-slate-100 flex items-center justify-center mb-4 text-slate-400 border border-slate-200">
+          <Search className="w-8 h-8" />
+        </div>
         <h1 className="text-2xl font-bold text-surface-900 mb-2">Store not found</h1>
         <p className="text-surface-500">This store may not exist or has been removed.</p>
       </div>
@@ -639,26 +642,30 @@ export default function StorefrontPage() {
             </div>
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-0.5">
               {[
-                { id: 'laptop_store', label: '💻 Laptop Store' },
-                { id: 'mobile_store', label: '📱 Mobile Store' },
-                { id: 'furniture_store', label: '🛋️ Furniture' },
-                { id: 'macha_boba', label: '🛍️ Boutique' },
-                { id: 'pastry_sweets', label: '💇 Salon & Spa' },
-                { id: 'asian_poke', label: '☕ Cafe & Bakery' },
-              ].map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setStore(prev => prev ? { ...prev, theme: { ...prev.theme, themeId: t.id } } : null)}
-                  className={clsx(
-                    "px-3 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap",
-                    store?.theme?.themeId === t.id
-                      ? "bg-amber-400 text-slate-950 shadow-sm"
-                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                  )}
-                >
-                  {t.label}
-                </button>
-              ))}
+                { id: 'laptop_store', label: 'Laptop Store', Icon: Laptop },
+                { id: 'mobile_store', label: 'Mobile Store', Icon: Smartphone },
+                { id: 'furniture_store', label: 'Furniture', Icon: Armchair },
+                { id: 'macha_boba', label: 'Boutique', Icon: Shirt },
+                { id: 'pastry_sweets', label: 'Salon & Spa', Icon: Scissors },
+                { id: 'asian_poke', label: 'Cafe & Bakery', Icon: Coffee },
+              ].map(t => {
+                const SwitchIcon = t.Icon;
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => setStore(prev => prev ? { ...prev, theme: { ...prev.theme, themeId: t.id } } : null)}
+                    className={clsx(
+                      "px-3 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap flex items-center gap-1.5",
+                      store?.theme?.themeId === t.id
+                        ? "bg-amber-400 text-slate-950 shadow-sm"
+                        : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    )}
+                  >
+                    <SwitchIcon className="w-3.5 h-3.5" />
+                    <span>{t.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         )}

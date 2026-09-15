@@ -9,7 +9,8 @@ import {
   QrCode, Palette, BarChart3, Smartphone, Sparkles, ArrowRight, Store, ShoppingBag,
   Zap, Star, Check, Phone, MessageCircle, ShieldCheck, MapPin, X, ExternalLink,
   Scissors, Shirt, Laptop, Coffee, Gem, Dumbbell, Wrench, Package, ArrowUpRight,
-  Monitor, Tablet, Armchair, ChevronRight, Eye, CheckCircle2, TrendingUp, Layers
+  Monitor, Tablet, Armchair, ChevronRight, Eye, CheckCircle2, TrendingUp, Layers,
+  LayoutGrid, Award
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -19,8 +20,9 @@ const MULTI_BUSINESS_DEMOS = [
     id: 'laptop_store',
     name: 'Laptop & Tech Studio',
     category: 'Laptops & Computers',
-    badge: '💻 TECH STORE DEMO',
+    badge: 'TECH STORE DEMO',
     themeId: 'laptop_store',
+    icon: Laptop,
     heroImage: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
     products: [
       { id: '1', name: 'MacBook Pro 16" M3 Max', price: '₹2,39,900', origPrice: '₹2,49,900', rating: '5.0', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&auto=format&fit=crop&q=80', badge: 'BESTSELLER' },
@@ -31,8 +33,9 @@ const MULTI_BUSINESS_DEMOS = [
     id: 'mobile_store',
     name: 'Mobile & Gadgets Hub',
     category: 'Smartphones & Audio',
-    badge: '📱 MOBILE SHOP DEMO',
+    badge: 'MOBILE SHOP DEMO',
     themeId: 'mobile_store',
+    icon: Smartphone,
     heroImage: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
     products: [
       { id: '3', name: 'iPhone 15 Pro Max 256GB Titanium', price: '₹1,39,900', origPrice: '₹1,49,900', rating: '4.9', image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&auto=format&fit=crop&q=80', badge: 'HOT DEAL' },
@@ -43,8 +46,9 @@ const MULTI_BUSINESS_DEMOS = [
     id: 'furniture_store',
     name: 'Furniture & Living Studio',
     category: 'Home Decor & Furniture',
-    badge: '🛋️ FURNITURE DEMO',
+    badge: 'FURNITURE DEMO',
     themeId: 'furniture_store',
+    icon: Armchair,
     heroImage: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop&q=80',
     products: [
       { id: '5', name: 'Nordic Velvet Ergonomic Armchair', price: '₹14,999', origPrice: '₹18,999', rating: '4.9', image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&auto=format&fit=crop&q=80', badge: 'EXCLUSIVE' },
@@ -55,8 +59,9 @@ const MULTI_BUSINESS_DEMOS = [
     id: 'boutique_store',
     name: 'Macha Artisan Boutique',
     category: 'Apparel & Fashion',
-    badge: '🛍️ BOUTIQUE DEMO',
+    badge: 'BOUTIQUE DEMO',
     themeId: 'macha_boba',
+    icon: Shirt,
     heroImage: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80',
     products: [
       { id: '7', name: 'Artisan Oversized Denim Jacket', price: '₹2,499', origPrice: '₹3,999', rating: '4.9', image: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=600&auto=format&fit=crop&q=80', badge: 'NEW COLLECTION' },
@@ -67,8 +72,9 @@ const MULTI_BUSINESS_DEMOS = [
     id: 'salon_store',
     name: 'Pastry & Velvet Spa Studio',
     category: 'Salon & Beauty Services',
-    badge: '💇 SALON DEMO',
+    badge: 'SALON DEMO',
     themeId: 'pastry_sweets',
+    icon: Scissors,
     heroImage: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=800&auto=format&fit=crop&q=80',
     products: [
       { id: '9', name: 'Organic Hydrating Facial & Scalp Therapy', price: '₹1,499', origPrice: '₹1,999', rating: '5.0', image: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=600&auto=format&fit=crop&q=80', badge: 'BOOK NOW' },
@@ -79,8 +85,9 @@ const MULTI_BUSINESS_DEMOS = [
     id: 'cafe_store',
     name: 'Asian Poke & Matcha Bar',
     category: 'Cafes & Dining',
-    badge: '☕ CAFE DEMO',
+    badge: 'CAFE DEMO',
     themeId: 'asian_poke',
+    icon: Coffee,
     heroImage: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=800&auto=format&fit=crop&q=80',
     products: [
       { id: '11', name: 'Ceremonial Grade Uji Matcha Latte', price: '₹299', origPrice: '₹349', rating: '4.9', image: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=600&auto=format&fit=crop&q=80', badge: 'FRESH BREW' },
@@ -115,6 +122,7 @@ export default function LandingPage() {
   const [previewModalTheme, setPreviewModalTheme] = useState<typeof themeList[0] | null>(null);
 
   const activeDemo = MULTI_BUSINESS_DEMOS[activeDemoIndex];
+  const ActiveIcon = activeDemo.icon;
 
   const filteredThemes = filterCategory === 'all'
     ? themeList
@@ -250,20 +258,24 @@ export default function LandingPage() {
                   
                   {/* Shop Demo Category Tabs */}
                   <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-hide mb-2 border-b border-slate-100 pt-1">
-                    {MULTI_BUSINESS_DEMOS.map((demo, idx) => (
-                      <button
-                        key={demo.id}
-                        onClick={() => setActiveDemoIndex(idx)}
-                        className={clsx(
-                          'px-3 py-1.5 rounded-xl text-[11px] font-extrabold transition-all whitespace-nowrap border',
-                          activeDemoIndex === idx
-                            ? 'bg-slate-900 text-white border-slate-900 shadow-md'
-                            : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
-                        )}
-                      >
-                        {demo.badge.split(' ')[0]} {demo.name.split(' ')[0]}
-                      </button>
-                    ))}
+                    {MULTI_BUSINESS_DEMOS.map((demo, idx) => {
+                      const TabIcon = demo.icon;
+                      return (
+                        <button
+                          key={demo.id}
+                          onClick={() => setActiveDemoIndex(idx)}
+                          className={clsx(
+                            'px-3 py-1.5 rounded-xl text-[11px] font-extrabold transition-all whitespace-nowrap border flex items-center gap-1.5',
+                            activeDemoIndex === idx
+                              ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                              : 'bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200'
+                          )}
+                        >
+                          <TabIcon className="w-3.5 h-3.5" />
+                          <span>{demo.name.split(' ')[0]}</span>
+                        </button>
+                      );
+                    })}
                   </div>
 
                   {/* Phone Screen Mockup */}
@@ -274,8 +286,9 @@ export default function LandingPage() {
                       <img src={activeDemo.heroImage} alt="" className="w-full h-full object-cover opacity-90" />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
                       
-                      <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-slate-900/80 text-white font-black text-[10px] border border-white/20 backdrop-blur-md">
-                        {activeDemo.badge}
+                      <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full bg-slate-900/80 text-white font-black text-[10px] border border-white/20 backdrop-blur-md flex items-center gap-1.5">
+                        <ActiveIcon className="w-3 h-3 text-amber-400" />
+                        <span>{activeDemo.badge}</span>
                       </span>
 
                       <div className="absolute bottom-3 left-3 right-3 text-white">
@@ -300,7 +313,10 @@ export default function LandingPage() {
                             <div className="flex items-center gap-2 mt-0.5">
                               <span className="text-xs font-black text-slate-900">{p.price}</span>
                               <span className="text-[10px] text-slate-400 line-through font-semibold">{p.origPrice}</span>
-                              <span className="text-[10px] font-extrabold text-amber-500 ml-auto flex items-center gap-0.5">★ {p.rating}</span>
+                              <span className="text-[10px] font-extrabold text-amber-500 ml-auto flex items-center gap-0.5">
+                                <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                                {p.rating}
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -412,26 +428,30 @@ export default function LandingPage() {
           {/* Category Filter Pills */}
           <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {[
-              { id: 'all', label: 'All Templates (18)' },
-              { id: 'tech', label: '💻 Laptops & Tech' },
-              { id: 'home', label: '🛋️ Furniture & Home' },
-              { id: 'fashion', label: '🛍️ Boutiques & Fashion' },
-              { id: 'specialty', label: '💇 Salons & Spas' },
-              { id: 'dining', label: '☕ Cafes & Dining' },
-            ].map(cat => (
-              <button
-                key={cat.id}
-                onClick={() => setFilterCategory(cat.id)}
-                className={clsx(
-                  'px-4 py-2 rounded-2xl text-xs font-extrabold transition-all border whitespace-nowrap',
-                  filterCategory === cat.id
-                    ? 'bg-slate-900 text-white border-slate-900 shadow-md'
-                    : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
-                )}
-              >
-                {cat.label}
-              </button>
-            ))}
+              { id: 'all', label: 'All Templates (18)', icon: LayoutGrid },
+              { id: 'tech', label: 'Laptops & Tech', icon: Laptop },
+              { id: 'home', label: 'Furniture & Home', icon: Armchair },
+              { id: 'fashion', label: 'Boutiques & Fashion', icon: Shirt },
+              { id: 'specialty', label: 'Salons & Spas', icon: Scissors },
+              { id: 'dining', label: 'Cafes & Dining', icon: Coffee },
+            ].map(cat => {
+              const FilterIcon = cat.icon;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => setFilterCategory(cat.id)}
+                  className={clsx(
+                    'px-4 py-2 rounded-2xl text-xs font-extrabold transition-all border whitespace-nowrap flex items-center gap-1.5',
+                    filterCategory === cat.id
+                      ? 'bg-slate-900 text-white border-slate-900 shadow-md'
+                      : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                  )}
+                >
+                  <FilterIcon className="w-3.5 h-3.5" />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Templates Grid */}
