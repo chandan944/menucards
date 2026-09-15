@@ -243,6 +243,54 @@ export const themeRegistry: Record<string, ThemeConfig & { heroImage?: string; b
     footer: { style: 'minimal' },
     supportedBlocks: BASE_BLOCKS,
   },
+
+  // 16. Laptop & Computer Store
+  laptop_store: {
+    id: 'laptop_store', name: 'Laptop & Tech Studio', description: 'Clean graphite & brushed silver clay aesthetic for computer stores & PC hardware', preview: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80', heroImage: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80', badgeText: 'ORIGINAL WARRANTY', category: 'tech', author: 'StoreFront', version: '2.0', free: true, status: 'active',
+    colors: { primary: '#0f172a', secondary: '#f8fafc', accent: '#0284c7', background: '#f1f5f9', surface: '#ffffff', surfaceHover: '#e2e8f0', text: '#0f172a', textSecondary: '#64748b', border: '#cbd5e1', success: '#10b981', warning: '#f59e0b', error: '#ef4444' },
+    typography: { headingFont: 'Outfit', bodyFont: 'Inter', headingWeight: '800', bodyWeight: '400' },
+    radius: { card: '24px', button: '16px', input: '12px', badge: '10px' },
+    cardStyle: 'bordered', buttonStyle: 'rounded',
+    shadows: { card: '0 8px 24px rgba(15,23,42,0.06)', hover: '0 16px 36px rgba(2,132,199,0.15)', modal: '0 24px 48px rgba(0,0,0,0.15)' },
+    animations: { intensity: 'medium', parallax: true, tilt: true, stagger: true, reveal: 'scale' },
+    hero: { style: 'split', overlay: 'none', height: 'medium' },
+    productCard: { style: 'standard', hoverEffect: 'lift', imageRatio: 'square' },
+    navigation: { style: 'blur', position: 'sticky' },
+    footer: { style: 'detailed' },
+    supportedBlocks: BASE_BLOCKS,
+  },
+
+  // 17. Mobile & Electronics Hub
+  mobile_store: {
+    id: 'mobile_store', name: 'Mobile & Gadgets Hub', description: 'Monochrome slate with electric blue accents for smartphones, earbuds & repair shops', preview: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80', heroImage: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80', badgeText: '100% GENUINE GADGETS', category: 'tech', author: 'StoreFront', version: '2.0', free: true, status: 'active',
+    colors: { primary: '#18181b', secondary: '#f4f4f5', accent: '#2563eb', background: '#f4f4f5', surface: '#ffffff', surfaceHover: '#e4e4e7', text: '#18181b', textSecondary: '#71717a', border: '#d4d4d8', success: '#16a34a', warning: '#d97706', error: '#dc2626' },
+    typography: { headingFont: 'Plus Jakarta Sans', bodyFont: 'Inter', headingWeight: '800', bodyWeight: '400' },
+    radius: { card: '24px', button: '16px', input: '12px', badge: '10px' },
+    cardStyle: 'elevated', buttonStyle: 'rounded',
+    shadows: { card: '0 8px 24px rgba(24,24,27,0.06)', hover: '0 16px 36px rgba(37,99,235,0.15)', modal: '0 24px 48px rgba(0,0,0,0.15)' },
+    animations: { intensity: 'medium', parallax: true, tilt: true, stagger: true, reveal: 'fade' },
+    hero: { style: 'split', overlay: 'none', height: 'medium' },
+    productCard: { style: 'standard', hoverEffect: 'lift', imageRatio: 'square' },
+    navigation: { style: 'blur', position: 'sticky' },
+    footer: { style: 'detailed' },
+    supportedBlocks: BASE_BLOCKS,
+  },
+
+  // 18. Furniture & Home Decor Studio
+  furniture_store: {
+    id: 'furniture_store', name: 'Furniture & Living Studio', description: 'Nordic minimalist beige & warm oak tones for sofas, interior decor & furniture', preview: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop&q=80', heroImage: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop&q=80', badgeText: 'NORDIC HANDCRAFTED', category: 'home', author: 'StoreFront', version: '2.0', free: true, status: 'active',
+    colors: { primary: '#292524', secondary: '#fbf9f6', accent: '#78716c', background: '#f5f2eb', surface: '#ffffff', surfaceHover: '#e7e5e4', text: '#1c1917', textSecondary: '#78716c', border: '#e7e5e4', success: '#15803d', warning: '#b45309', error: '#b91c1c' },
+    typography: { headingFont: 'Playfair Display', bodyFont: 'Lora', headingWeight: '700', bodyWeight: '400' },
+    radius: { card: '28px', button: '20px', input: '14px', badge: '12px' },
+    cardStyle: 'bordered', buttonStyle: 'rounded',
+    shadows: { card: '0 6px 20px rgba(41,37,36,0.05)', hover: '0 14px 32px rgba(41,37,36,0.12)', modal: '0 24px 48px rgba(0,0,0,0.15)' },
+    animations: { intensity: 'low', parallax: true, tilt: false, stagger: true, reveal: 'fade' },
+    hero: { style: 'cinematic', overlay: 'light', height: 'medium' },
+    productCard: { style: 'minimal', hoverEffect: 'lift', imageRatio: '4:3' },
+    navigation: { style: 'solid', position: 'sticky' },
+    footer: { style: 'detailed' },
+    supportedBlocks: BASE_BLOCKS,
+  },
 };
 
 export const themeList = Object.values(themeRegistry);

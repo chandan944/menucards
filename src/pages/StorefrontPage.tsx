@@ -20,6 +20,462 @@ import { InstagramIcon, FacebookIcon, TwitterIcon } from '@/components/ui/Social
 import { clsx } from 'clsx';
 import type { Store, Business, Product, Category, Discount, Review } from '@/types';
 
+// ─── Demo Store Fallback Data for /s/demo ─────────────────────────────────────
+const createDemoStore = (themeId: string = 'laptop_store'): Store => ({
+  id: 'demo-store-id',
+  businessId: 'demo-business-id',
+  ownerId: 'demo-owner-id',
+  name: 'Studio Electronics & Lifestyle Demo',
+  slug: 'demo',
+  status: 'published',
+  theme: {
+    themeId,
+    customColors: {},
+    customTypography: {},
+    customRadius: '',
+    customAnimationIntensity: 'high',
+  },
+  sections: [],
+  settings: {
+    whatsappNumber: '919876543210',
+    whatsappMessage: 'Hi! I found your store through your digital storefront demo and would like to place an order.',
+    showCallButton: true,
+    showWhatsappButton: true,
+    showDirections: true,
+    showSocialLinks: true,
+    announcement: '⚡ LIVE DEMO STORE: Order Laptops, Mobiles, Furniture & Boutiques via WhatsApp!',
+    announcementActive: true,
+  },
+  seo: {
+    title: 'Studio Electronics & Living | Live Digital Storefront Demo',
+    description: 'Explore live digital storefront for laptops, smartphones, furniture and boutique products.',
+    ogImage: '',
+  },
+  currency: 'INR',
+  currencySymbol: '₹',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+});
+
+const DEMO_BUSINESS: Business = {
+  id: 'demo-business-id',
+  ownerId: 'demo-owner-id',
+  name: 'Studio Tech & Living',
+  type: 'electronics',
+  slug: 'demo',
+  logo: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=300&auto=format&fit=crop&q=80',
+  cover: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=1200&auto=format&fit=crop&q=80',
+  description: 'Premium Laptops, Mobile Electronics, Nordic Furniture & Lifestyle Apparel. Scan QR code to order directly via WhatsApp or Call with zero commissions.',
+  ownerName: 'Studio Demo Manager',
+  phone: '+919876543210',
+  email: 'demo@storefront.app',
+  location: 'Tech Plaza, MG Road, Metro City',
+  website: 'https://storefront-demo.app',
+  socialLinks: {
+    instagram: 'https://instagram.com',
+    facebook: 'https://facebook.com',
+    twitter: 'https://twitter.com',
+  },
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  status: 'published',
+};
+
+const DEMO_CATEGORIES: Category[] = [
+  { id: 'cat-laptops', storeId: 'demo-store-id', name: 'Laptops & Computers', description: 'Ultraportables, Workstations & Gaming Laptops', image: '', icon: '💻', order: 1, visibility: true, featured: true, productCount: 3, createdAt: new Date(), updatedAt: new Date() },
+  { id: 'cat-mobiles', storeId: 'demo-store-id', name: 'Smartphones & Audio', description: 'Flagship Mobiles & Wireless Earbuds', image: '', icon: '📱', order: 2, visibility: true, featured: true, productCount: 3, createdAt: new Date(), updatedAt: new Date() },
+  { id: 'cat-furniture', storeId: 'demo-store-id', name: 'Furniture & Living', description: 'Nordic Armchairs, Oak Desks & LED Lighting', image: '', icon: '🛋️', order: 3, visibility: true, featured: true, productCount: 3, createdAt: new Date(), updatedAt: new Date() },
+  { id: 'cat-fashion', storeId: 'demo-store-id', name: 'Fashion & Boutiques', description: 'Denim Jackets, Totes & Apparel', image: '', icon: '🛍️', order: 4, visibility: true, featured: true, productCount: 1, createdAt: new Date(), updatedAt: new Date() },
+  { id: 'cat-salon', storeId: 'demo-store-id', name: 'Salon & Spa Services', description: 'Facials, Hair Spa & Grooming', image: '', icon: '💇', order: 5, visibility: true, featured: true, productCount: 1, createdAt: new Date(), updatedAt: new Date() },
+  { id: 'cat-cafe', storeId: 'demo-store-id', name: 'Cafe & Gourmet', description: 'Matcha Lattes & Artisanal Pastries', image: '', icon: '☕', order: 6, visibility: true, featured: true, productCount: 1, createdAt: new Date(), updatedAt: new Date() },
+];
+
+const DEMO_PRODUCTS: Product[] = [
+  {
+    id: 'prod-macbook',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-laptops',
+    name: 'MacBook Pro 16" M3 Max',
+    price: 249900,
+    salePrice: 239900,
+    description: 'Apple M3 Max chip with 14-core CPU and 30-core GPU, 36GB Unified Memory, 1TB SSD. 16.2" Liquid Retina XDR display with 120Hz ProMotion.',
+    mainImage: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80'],
+    sku: 'MAC-M3-16',
+    tags: ['Apple', 'M3 Max', 'Laptop'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: true,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-rog',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-laptops',
+    name: 'ASUS ROG Zephyrus G16 Gaming Laptop',
+    price: 189900,
+    salePrice: 174900,
+    description: 'Intel Core Ultra 9, NVIDIA RTX 4080 12GB, 32GB LPDDR5X RAM, 1TB Gen4 SSD, 240Hz OLED Display. Ultra-thin CNC aluminum body.',
+    mainImage: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&auto=format&fit=crop&q=80'],
+    sku: 'ROG-G16-4080',
+    tags: ['Gaming', 'RTX 4080', 'OLED'],
+    status: 'active',
+    featured: true,
+    bestseller: false,
+    isNew: true,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 2,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-dell',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-laptops',
+    name: 'Dell XPS 13 Ultra-Thin Laptop',
+    price: 129900,
+    salePrice: 119900,
+    description: 'Intel Core Ultra 7, 16GB RAM, 512GB SSD, 13.4" 4K+ Touchscreen Display. Seamless glass touchpad.',
+    mainImage: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=800&auto=format&fit=crop&q=80'],
+    sku: 'DELL-XPS-13',
+    tags: ['Dell', 'Ultrabook'],
+    status: 'active',
+    featured: false,
+    bestseller: false,
+    isNew: false,
+    veg: false,
+    spicy: false,
+    premium: false,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 3,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-iphone',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-mobiles',
+    name: 'iPhone 15 Pro Max 256GB Titanium',
+    price: 149900,
+    salePrice: 139900,
+    description: 'Aerospace-grade titanium design, A17 Pro chip, 48MP main camera with 5x optical zoom, customizable Action button, USB-C 3.0 speeds.',
+    mainImage: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=800&auto=format&fit=crop&q=80'],
+    sku: 'IPHONE-15PM',
+    tags: ['iPhone', 'Titanium'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: true,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 4,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-s24',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-mobiles',
+    name: 'Samsung Galaxy S24 Ultra 5G',
+    price: 129900,
+    salePrice: 119900,
+    description: '200MP Quad Telephoto Camera, Built-in S Pen, Snapdragon 8 Gen 3 for Galaxy, Live Call Translate & AI Photo Assist.',
+    mainImage: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&auto=format&fit=crop&q=80'],
+    sku: 'SAMS-S24U',
+    tags: ['Samsung', 'Galaxy AI'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: true,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 5,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-earbuds',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-mobiles',
+    name: 'ANC Wireless Noise-Canceling Earbuds',
+    price: 8999,
+    salePrice: 5999,
+    description: 'Active Noise Cancellation, 36hr total battery with wireless charging case, IPX5 spatial audio with head tracking.',
+    mainImage: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80'],
+    sku: 'AUDIO-EARBUDS',
+    tags: ['Audio', 'Wireless'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: false,
+    veg: false,
+    spicy: false,
+    premium: false,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 6,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-armchair',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-furniture',
+    name: 'Nordic Ergonomic Velvet Armchair',
+    price: 18999,
+    salePrice: 14999,
+    description: 'Handcrafted solid beech wood frame with high-density plush velvet upholstery & ergonomic lumbar support.',
+    mainImage: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&auto=format&fit=crop&q=80'],
+    sku: 'FURN-ARMCHAIR',
+    tags: ['Living', 'Nordic'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: true,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 7,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-desk',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-furniture',
+    name: 'Solid Oak Minimalist Executive Desk',
+    price: 24999,
+    salePrice: 21999,
+    description: 'Sustainably harvested solid white oak desk with built-in wireless Qi charger and hidden cable management tray.',
+    mainImage: 'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&auto=format&fit=crop&q=80'],
+    sku: 'FURN-OAK-DESK',
+    tags: ['Office', 'Oak'],
+    status: 'active',
+    featured: false,
+    bestseller: false,
+    isNew: false,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 8,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-lamp',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-furniture',
+    name: 'Dimmable Brushed Brass LED Desk Lamp',
+    price: 4499,
+    salePrice: 3299,
+    description: 'Touch dimmable warm LED lamp with 3 color temperatures and 360-degree adjustable swivel head.',
+    mainImage: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&auto=format&fit=crop&q=80'],
+    sku: 'LAMP-BRASS',
+    tags: ['Lighting', 'Brass'],
+    status: 'active',
+    featured: false,
+    bestseller: false,
+    isNew: false,
+    veg: false,
+    spicy: false,
+    premium: false,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 9,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-denim',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-fashion',
+    name: 'Artisan Minimalist Oversized Denim Jacket',
+    price: 3999,
+    salePrice: 2499,
+    description: '100% Organic heavyweight cotton denim with custom matte black hardware.',
+    mainImage: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&auto=format&fit=crop&q=80'],
+    sku: 'FASH-DENIM',
+    tags: ['Fashion', 'Denim'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: true,
+    veg: false,
+    spicy: false,
+    premium: false,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 10,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-facial',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-salon',
+    name: 'Organic Hydrating Facial & Scalp Therapy',
+    price: 1999,
+    salePrice: 1499,
+    description: '60-minute deep botanical facial treatment with aromatherapy scalp massage and collagen mask.',
+    mainImage: 'https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1560750588-73207b1ef5b8?w=800&auto=format&fit=crop&q=80'],
+    sku: 'SPA-FACIAL',
+    tags: ['Spa', 'Facial'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: false,
+    veg: false,
+    spicy: false,
+    premium: true,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 11,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'prod-matcha',
+    storeId: 'demo-store-id',
+    categoryId: 'cat-cafe',
+    name: 'Ceremonial Grade Uji Matcha Latte',
+    price: 349,
+    salePrice: 299,
+    description: 'First-harvest Kyoto Uji matcha whisked with organic oat milk and raw agave nectar.',
+    mainImage: 'https://images.unsplash.com/photo-1558857563-b371033873b8?w=800&auto=format&fit=crop&q=80',
+    images: ['https://images.unsplash.com/photo-1558857563-b371033873b8?w=800&auto=format&fit=crop&q=80'],
+    sku: 'CAFE-MATCHA',
+    tags: ['Matcha', 'Cafe'],
+    status: 'active',
+    featured: true,
+    bestseller: true,
+    isNew: true,
+    veg: true,
+    spicy: false,
+    premium: false,
+    availability: true,
+    variants: [],
+    addons: [],
+    customAttributes: {},
+    order: 12,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
+const DEMO_DISCOUNTS: Discount[] = [
+  {
+    id: 'disc-1',
+    storeId: 'demo-store-id',
+    name: 'FLAT 20% OFF ON ALL TECH & GADGETS',
+    description: 'Get 20% off on smartphones and laptop purchases',
+    code: 'TECH20',
+    type: 'percentage',
+    value: 20,
+    productIds: [],
+    categoryIds: [],
+    startDate: null,
+    endDate: null,
+    startTime: '',
+    endTime: '',
+    active: true,
+    usageLimit: 100,
+    usageCount: 12,
+    minOrderValue: 5000,
+    maxDiscount: 2000,
+    conditions: {},
+    image: '',
+    badge: 'OFFER',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'disc-2',
+    storeId: 'demo-store-id',
+    name: 'FREE EXPRESS HOME DELIVERY & UNBOXING DEMO',
+    description: 'Free home delivery on orders above 10,000',
+    code: 'FREEDEMO',
+    type: 'flat',
+    value: 500,
+    productIds: [],
+    categoryIds: [],
+    startDate: null,
+    endDate: null,
+    startTime: '',
+    endTime: '',
+    active: true,
+    usageLimit: 100,
+    usageCount: 8,
+    minOrderValue: 10000,
+    maxDiscount: 500,
+    conditions: {},
+    image: '',
+    badge: 'FREE DELIVERY',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
+
+const DEMO_REVIEWS: Review[] = [
+  { id: 'rev-1', storeId: 'demo-store-id', customerName: 'Alex Rivera', rating: 5, comment: 'Bought my MacBook Pro through WhatsApp! The digital storefront made comparing specs super smooth.', status: 'published', createdAt: new Date() },
+  { id: 'rev-2', storeId: 'demo-store-id', customerName: 'Priya Sharma', rating: 5, comment: 'Scanned the QR stand in their furniture showroom and ordered the Velvet Armchair directly. Excellent service!', status: 'published', createdAt: new Date() },
+  { id: 'rev-3', storeId: 'demo-store-id', customerName: 'Vikram Patel', rating: 5, comment: 'Fastest catalog scanning ever! My customers browse all mobile accessories in seconds.', status: 'published', createdAt: new Date() },
+];
+
 export default function StorefrontPage() {
   const { slug } = useParams<{ slug: string }>();
   const [store, setStore] = useState<Store | null>(null);
@@ -42,8 +498,27 @@ export default function StorefrontPage() {
     if (!slug) return;
     (async () => {
       try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestedTheme = urlParams.get('theme') || 'laptop_store';
+
+        if (slug === 'demo' || slug.includes('demo')) {
+          setStore(createDemoStore(requestedTheme));
+          setBusiness(DEMO_BUSINESS);
+          setProducts(DEMO_PRODUCTS);
+          setCategories(DEMO_CATEGORIES);
+          setDiscounts(DEMO_DISCOUNTS);
+          setReviews(DEMO_REVIEWS);
+          setLoading(false);
+          document.title = "Live Demo Storefront | Laptops, Mobiles, Furniture & Boutiques";
+          return;
+        }
+
         const s = await getStoreBySlug(slug);
-        if (!s) { setError(true); setLoading(false); return; }
+        if (!s) {
+          setError(true);
+          setLoading(false);
+          return;
+        }
         setStore(s);
 
         const [biz, prods, cats, offers, revs] = await Promise.all([
@@ -71,7 +546,19 @@ export default function StorefrontPage() {
         document.title = s.seo?.title || `${biz?.name || 'Store'} | Digital Storefront`;
       } catch (err) {
         console.error(err);
-        setError(true);
+        if (slug === 'demo' || slug?.includes('demo')) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const requestedTheme = urlParams.get('theme') || 'laptop_store';
+          setStore(createDemoStore(requestedTheme));
+          setBusiness(DEMO_BUSINESS);
+          setProducts(DEMO_PRODUCTS);
+          setCategories(DEMO_CATEGORIES);
+          setDiscounts(DEMO_DISCOUNTS);
+          setReviews(DEMO_REVIEWS);
+          setError(false);
+        } else {
+          setError(true);
+        }
       }
       setLoading(false);
     })();
@@ -142,6 +629,39 @@ export default function StorefrontPage() {
       {fontsUrl && <link rel="stylesheet" href={fontsUrl} />}
 
       <div className="storefront min-h-screen" style={{ ...cssVars, backgroundColor: 'var(--sf-background)', color: 'var(--sf-text)', fontFamily: 'var(--sf-body-font)' }}>
+
+        {/* ─── Live Demo Interactive Switcher (Only on /s/demo) ─── */}
+        {(slug === 'demo' || slug?.includes('demo')) && (
+          <div className="bg-slate-900 text-slate-100 py-2.5 px-4 text-xs font-semibold flex items-center justify-between gap-4 overflow-x-auto border-b border-slate-800 sticky top-0 z-50 shadow-md">
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="font-bold text-amber-300">DEMO TEMPLATES:</span>
+            </div>
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide py-0.5">
+              {[
+                { id: 'laptop_store', label: '💻 Laptop Store' },
+                { id: 'mobile_store', label: '📱 Mobile Store' },
+                { id: 'furniture_store', label: '🛋️ Furniture' },
+                { id: 'macha_boba', label: '🛍️ Boutique' },
+                { id: 'pastry_sweets', label: '💇 Salon & Spa' },
+                { id: 'asian_poke', label: '☕ Cafe & Bakery' },
+              ].map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setStore(prev => prev ? { ...prev, theme: { ...prev.theme, themeId: t.id } } : null)}
+                  className={clsx(
+                    "px-3 py-1 rounded-lg text-xs font-bold transition-all whitespace-nowrap",
+                    store?.theme?.themeId === t.id
+                      ? "bg-amber-400 text-slate-950 shadow-sm"
+                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                  )}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* ─── Announcement Bar (Only if configured by store owner) ─── */}
         {store?.settings?.announcementActive && store.settings.announcement && (
