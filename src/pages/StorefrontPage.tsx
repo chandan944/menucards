@@ -15,7 +15,7 @@ import { StoreReviewsSection } from '@/components/storefront/StoreReviewsSection
 import {
   MapPin, Phone, MessageCircle, Star, X, ArrowUp, ShoppingBag,
   Flame, Sparkles, CheckCircle2, Laptop, Smartphone, Armchair,
-  Shirt, Scissors, Coffee, Search, Store as StoreIcon
+  Shirt, Scissors, Coffee, Search, Store as StoreIcon, Navigation, Share2, ShieldCheck
 } from 'lucide-react';
 import { InstagramIcon, FacebookIcon, TwitterIcon } from '@/components/ui/SocialIcons';
 import { clsx } from 'clsx';
@@ -602,6 +602,28 @@ export default function StorefrontPage() {
     if (store) trackEvent(store.id, 'call_click');
   };
 
+  const handleDirections = () => {
+    if (!business?.location) return;
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.location)}`, '_blank');
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: business?.name || 'Digital Storefront',
+          text: business?.description || 'Check out this digital storefront!',
+          url: window.location.href,
+        });
+      } catch {
+        // ignore cancellation
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      alert('Store URL copied to clipboard!');
+    }
+  };
+
   // ─── Loading ──────────────────────────────────────────────────────────
   if (loading) {
     return (
@@ -631,7 +653,7 @@ export default function StorefrontPage() {
       {/* Load theme fonts */}
       {fontsUrl && <link rel="stylesheet" href={fontsUrl} />}
 
-      <div className="storefront min-h-screen" style={{ ...cssVars, backgroundColor: 'var(--sf-background)', color: 'var(--sf-text)', fontFamily: 'var(--sf-body-font)' }}>
+      <div className="storefront min-h-[100dvh] w-full overflow-x-hidden p-0 m-0" style={{ ...cssVars, backgroundColor: 'var(--sf-background)', color: 'var(--sf-text)', fontFamily: 'var(--sf-body-font)' }}>
 
         {/* ─── Live Demo Interactive Switcher (Only on /s/demo) ─── */}
         {(slug === 'demo' || slug?.includes('demo')) && (
@@ -679,84 +701,122 @@ export default function StorefrontPage() {
           </div>
         )}
 
-        {/* ─── Ultra-Sleek Professional Hero Banner ────────────────────────── */}
-        <section className="relative overflow-hidden min-h-[380px] sm:min-h-[460px] flex items-center justify-center">
-          {/* Cover Background */}
-          {business.cover ? (
-            <ParallaxLayer speed={0.3} className="absolute inset-0">
-              <img src={business.cover} alt="" className="w-full h-full object-cover" />
-            </ParallaxLayer>
-          ) : (
-            <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, var(--sf-primary), var(--sf-accent))` }} />
-          )}
-
-          {/* High-Contrast Gradient Backdrop Mask for 100% Text Legibility */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
-
-          {/* Clean Hero Content Box */}
-          <div className="relative z-10 max-w-3xl mx-auto px-6 py-12 flex flex-col items-center text-center">
-            
-            {/* Store Avatar Logo */}
-            <ScrollReveal variant="scale">
-              <div className="relative mb-4">
-                <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-white/10 backdrop-blur-md border-2 border-white/40 shadow-2xl overflow-hidden p-1 flex items-center justify-center">
-                  {business.logo ? (
-                    <img src={business.logo} alt={business.name} className="w-full h-full rounded-2xl object-cover" />
-                  ) : (
-                    <div className="w-full h-full rounded-2xl bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center text-4xl font-black text-white">
-                      {business.name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white p-1 rounded-full shadow-lg border-2 border-slate-900" title="Verified Store">
-                  <CheckCircle2 className="w-4 h-4" />
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* Status & Category Badges */}
-            <ScrollReveal variant="fadeUp" delay={0.1}>
-              <div className="flex items-center justify-center gap-2 mb-2 flex-wrap">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /> OPEN NOW
-                </span>
-                {business.location && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white/15 text-white/90 text-xs font-semibold border border-white/20">
-                    <MapPin className="w-3.5 h-3.5 text-amber-300" /> {business.location}
-                  </span>
-                )}
-              </div>
-            </ScrollReveal>
-
-            {/* Business Title */}
-            <ScrollReveal variant="fadeUp" delay={0.2}>
-              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-2 drop-shadow-md" style={{ fontFamily: 'var(--sf-heading-font)' }}>
-                {business.name}
-              </h1>
-            </ScrollReveal>
-
-            {/* Business Description */}
-            {business.description && (
-              <ScrollReveal variant="fadeUp" delay={0.3}>
-                <p className="text-white/85 max-w-lg text-sm sm:text-base leading-relaxed font-normal drop-shadow-sm mb-4">
-                  {business.description}
-                </p>
-              </ScrollReveal>
+        {/* ─── Redesigned Premium Floating Store Hero ────────────────────────── */}
+        <section className="relative w-full overflow-hidden">
+          {/* Parallax / Gradient Cover Banner */}
+          <div className="relative h-44 sm:h-64 md:h-72 w-full bg-slate-900 overflow-hidden">
+            {business.cover ? (
+              <ParallaxLayer speed={0.3} className="absolute inset-0">
+                <img src={business.cover} alt="" className="w-full h-full object-cover opacity-90" />
+              </ParallaxLayer>
+            ) : (
+              <div className="absolute inset-0 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900" />
             )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+          </div>
 
-            {/* Quick Action Buttons */}
-            <ScrollReveal variant="fadeUp" delay={0.4}>
-              <div className="flex flex-wrap justify-center gap-3 mt-4">
-                {business.phone && (
-                  <button onClick={handleWhatsApp} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-500 text-white text-sm font-bold hover:bg-emerald-600 transition-all shadow-xl active:scale-95">
-                    <MessageCircle className="w-4 h-4" /> Order on WhatsApp
-                  </button>
-                )}
-                {business.phone && (
-                  <button onClick={handleCall} className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-white/15 backdrop-blur-md text-white text-sm font-bold hover:bg-white/25 transition-all border border-white/20 shadow-xl active:scale-95">
-                    <Phone className="w-4 h-4 text-amber-300" /> Call Store
-                  </button>
-                )}
+          {/* Overlapping Floating Profile & Hero Card */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10 -mt-20 sm:-mt-24 mb-6">
+            <ScrollReveal variant="fadeUp">
+              <div
+                className="rounded-3xl p-5 sm:p-8 backdrop-blur-xl border shadow-2xl transition-all"
+                style={{
+                  backgroundColor: 'var(--sf-surface)',
+                  borderColor: 'var(--sf-border)',
+                  boxShadow: 'var(--sf-shadow-card)',
+                }}
+              >
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+
+                  {/* 3D Glass Avatar Logo */}
+                  <div className="relative shrink-0 -mt-14 sm:-mt-18 md:-mt-14">
+                    <div className="w-28 h-28 sm:w-36 sm:h-36 rounded-3xl p-1.5 backdrop-blur-md border-2 border-white/40 shadow-2xl overflow-hidden group bg-slate-950/20">
+                      {business.logo ? (
+                        <img src={business.logo} alt={business.name} className="w-full h-full rounded-2xl object-cover transition-transform group-hover:scale-105" />
+                      ) : (
+                        <div className="w-full h-full rounded-2xl bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center text-4xl font-black text-white shadow-inner">
+                          {business.name.charAt(0)}
+                        </div>
+                      )}
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 bg-emerald-500 text-white p-1.5 rounded-full shadow-lg border-2 border-white dark:border-slate-900" title="Verified Store">
+                      <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                  </div>
+
+                  {/* Store Details & Badge Info */}
+                  <div className="flex-1 text-center md:text-left space-y-3">
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 text-xs font-bold border border-emerald-500/20">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> OPEN NOW
+                      </span>
+                      {business.location && (
+                        <button
+                          onClick={handleDirections}
+                          className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium transition-all hover:opacity-80"
+                          style={{ backgroundColor: 'var(--sf-background)', color: 'var(--sf-text-secondary)', border: '1px solid var(--sf-border)' }}
+                        >
+                          <MapPin className="w-3.5 h-3.5 text-amber-500" /> {business.location}
+                        </button>
+                      )}
+                      <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold" style={{ backgroundColor: 'var(--sf-background)', color: 'var(--sf-text)', border: '1px solid var(--sf-border)' }}>
+                        <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" /> 4.9 Verified Store
+                      </span>
+                    </div>
+
+                    <h1 className="text-2xl sm:text-4xl font-black tracking-tight" style={{ fontFamily: 'var(--sf-heading-font)', color: 'var(--sf-text)' }}>
+                      {business.name}
+                    </h1>
+
+                    {business.description && (
+                      <p className="text-xs sm:text-sm leading-relaxed max-w-2xl font-normal" style={{ color: 'var(--sf-text-secondary)' }}>
+                        {business.description}
+                      </p>
+                    )}
+
+                    {/* High-Converting Action Buttons Bar */}
+                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 pt-2">
+                      {business.phone && (
+                        <button
+                          onClick={handleWhatsApp}
+                          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95 group"
+                        >
+                          <MessageCircle className="w-4 h-4 group-hover:scale-110 transition-transform" /> Order on WhatsApp
+                        </button>
+                      )}
+
+                      {business.phone && (
+                        <button
+                          onClick={handleCall}
+                          className="flex items-center gap-2 px-5 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all border shadow-sm active:scale-95"
+                          style={{ backgroundColor: 'var(--sf-background)', color: 'var(--sf-text)', borderColor: 'var(--sf-border)' }}
+                        >
+                          <Phone className="w-4 h-4 text-amber-500" /> Call Store
+                        </button>
+                      )}
+
+                      {business.location && (
+                        <button
+                          onClick={handleDirections}
+                          className="flex items-center gap-2 px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all border shadow-sm active:scale-95"
+                          style={{ backgroundColor: 'var(--sf-background)', color: 'var(--sf-text-secondary)', borderColor: 'var(--sf-border)' }}
+                        >
+                          <Navigation className="w-4 h-4 text-sky-500" /> Directions
+                        </button>
+                      )}
+
+                      <button
+                        onClick={handleShare}
+                        className="flex items-center justify-center p-3 rounded-2xl text-xs font-bold transition-all border shadow-sm active:scale-95"
+                        style={{ backgroundColor: 'var(--sf-background)', color: 'var(--sf-text-secondary)', borderColor: 'var(--sf-border)' }}
+                        title="Share Store"
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
               </div>
             </ScrollReveal>
           </div>

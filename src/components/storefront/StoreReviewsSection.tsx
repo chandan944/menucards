@@ -62,13 +62,14 @@ export function StoreReviewsSection({
       setShowAuthModal(true);
       return;
     }
-    if (!customerName.trim() || !comment.trim()) return;
+    const nameToUse = (customerName || user.displayName || user.email?.split('@')[0] || 'Verified Customer').trim();
+    if (!comment.trim()) return;
 
     setIsSubmitting(true);
     try {
       const reviewData: Omit<Review, 'id' | 'createdAt'> = {
         storeId,
-        customerName: customerName.trim(),
+        customerName: nameToUse,
         rating,
         comment: comment.trim(),
         status: 'published',
@@ -422,24 +423,31 @@ export function StoreReviewsSection({
                     </span>
                   </div>
 
-                  {/* Customer Name */}
-                  <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--sf-text)' }}>
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="e.g. Sarah Jenkins"
-                      className="w-full px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-2"
-                      style={{
-                        backgroundColor: 'var(--sf-surface)',
-                        border: '1px solid var(--sf-border)',
-                        color: 'var(--sf-text)',
-                      }}
-                    />
+                  {/* Auto-Fetched Account Profile Badge */}
+                  <div
+                    className="p-3.5 rounded-2xl flex items-center justify-between"
+                    style={{ backgroundColor: 'var(--sf-surface)', border: '1px solid var(--sf-border)' }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-9 h-9 rounded-full text-white font-bold flex items-center justify-center text-sm shadow-sm"
+                        style={{ backgroundColor: 'var(--sf-accent)' }}
+                      >
+                        {(user.displayName || user.email || 'U').charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold flex items-center gap-1.5" style={{ color: 'var(--sf-text)' }}>
+                          {user.displayName || user.email?.split('@')[0] || 'Verified Customer'}
+                          <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
+                        </p>
+                        <p className="text-[11px]" style={{ color: 'var(--sf-text-secondary)' }}>
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-500 text-[10px] font-extrabold border border-emerald-500/20">
+                      Verified
+                    </span>
                   </div>
 
                   {/* Comment */}
